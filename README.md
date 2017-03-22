@@ -46,14 +46,16 @@ Any transcript present in the input (&lt;gff>) will be edited according to the f
 - If its transcript\_id is **absent from** <**3p\_supported\_reads**>, its **TTS will be left untouched**.
 - If its transcript\_id is **present in** <**5p\_supported\_reads**>, its 5' end structure will be affected the following way:
     - **First**, its 5' end coordinates will be **adjusted** according to the information contained in <5p\_clusters\_bed>, _i.e._, they will be extended to the 5'end of the TSS cluster the transcript belongs to. In doing so, we ensure that within a cluster, all TSSs align at the exact same position.
-    - **Second**, a chain of artificial, "biologically impossible" exons will be added upstream of the adjusted TSS (_i.e._, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These **false exons** (identified with `**fakeExon "yes";**` in the 9th field of the GFF output) serve as **anchors** to supported TSSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
+    - **Second**, a chain of artificial, "biologically impossible" exons will be added upstream of the adjusted TSS (_i.e._, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These **false exons** (identified with ** `fakeExon "yes";` ** in the 9th field of the GFF output) serve as **anchors** to supported TSSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
 - If its transcript\_id is **present in** <**3p\_supported\_reads**>, its 3' end structure will be affected the following way:
     - **First**, its 3' end coordinates will be **adjusted** according to the information contained in <3p\_clusters\_bed>, _i.e._, they will be extended to the 3'end of the TTS cluster the transcript belongs to. In doing so, we ensure that within a cluster, all TTSs align at the exact same position.
-    - **Second**, a chain of artificial, "biologically impossible" exons will be added downstream of the adjusted TTS (_i.e._, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These **false exons** (identified with `**fakeExon "yes";**` in the 9th field of the GFF output) serve as **anchors** to supported TTSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
+    - **Second**, a chain of artificial, "biologically impossible" exons will be added downstream of the adjusted TTS (_i.e._, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These **false exons** (identified with ** `fakeExon "yes";` ** in the 9th field of the GFF output) serve as **anchors** to supported TTSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
 
 **IMPORTANT WARNING: Any false exon (identified with `fakeExon "yes";` in anchorTranscriptsEnds' output) generated in the process and fed to the merging program NEEDS TO BE REMOVED AFTER MERGING.**
 
 # OUTPUT
+
+GFF to standard output.
 
 # DEPENDENCIES
 

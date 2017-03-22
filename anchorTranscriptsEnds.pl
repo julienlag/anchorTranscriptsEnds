@@ -36,22 +36,22 @@ C<< anchorTranscriptsEnds.pl <gff> <5p_supported_reads> <3p_supported_reads> <5p
 
 <gff> B<must> contain exon records (all other features will be skipped), grouped by transcript_id.
 
-=item B<arg2 <B<5p_supported_reads>>: Path to the file containing the transcript_id's of the reads present in <gff> that are to be 5'-anchored.
+=item B<arg2> <B<5p_supported_reads>>: Path to the file containing the transcript_id's of the reads present in <gff> that are to be 5'-anchored.
 
 <5p_supported_reads> must contain one transcript_id per line.
 
-=item B<arg3 <B<3p_supported_reads>>: Path to the file containing the transcript_id's of the reads present in <gff> that are to be 3'-anchored.
+=item B<arg3> <B<3p_supported_reads>>: Path to the file containing the transcript_id's of the reads present in <gff> that are to be 3'-anchored.
 
 <3p_supported_reads> must contain one transcript_id per line.
 
-=item B<arg4 <B<5p_clusters_bed>>: Path to the BED6 file containing the coordinates of the TSS clusters, with transcript_id's present in a comma-separated list in the 4th field (as obtained through I<e.g.> C<< bedtools merge -c 4 -o collapse -s -d 5 -i <raw_TSSs.bed> >>).
+=item B<arg4> <B<5p_clusters_bed>>: Path to the BED6 file containing the coordinates of the TSS clusters, with transcript_id's present in a comma-separated list in the 4th field (as obtained through I<e.g.> C<< bedtools merge -c 4 -o collapse -s -d 5 -i <raw_TSSs.bed> >>).
 
 These will be used to adjust the coordinates of supported TSSs, meaning that all transcript_id's present in <5p_supported_reads> should be present in <5p_clusters_bed> (others will be ignored).
 
 The TSSs of all transcript_id's present in <5p_supported_reads> will be adjusted according to the corresponding TSS cluster in <5p_clusters_bed> (I<i.e.>, they will be extended or shortened to the cluster's 5' end).
 
 
-=item B<arg5 <B<3p_clusters_bed>>: Path to the BED6 file containing the coordinates of the TTS clusters, with transcript_id's present in a comma-separated list in the 4th field (as obtained through I<e.g.> C<< bedtools merge -c 4 -o collapse -s -d 5 -i <raw_TTSs.bed> >>).
+=item B<arg5> <B<3p_clusters_bed>>: Path to the BED6 file containing the coordinates of the TTS clusters, with transcript_id's present in a comma-separated list in the 4th field (as obtained through I<e.g.> C<< bedtools merge -c 4 -o collapse -s -d 5 -i <raw_TTSs.bed> >>).
 
 These will be used to adjust the coordinates of supported TTSs, meaning that all transcript_id's present in <3p_supported_reads> should be present in <3p_clusters_bed> (others will be ignored).
 

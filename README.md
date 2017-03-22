@@ -28,19 +28,30 @@ A utility to prepare a GTF file of transcriptome reads for anchored transcript m
 
     These will be used to adjust the coordinates of supported TSSs, meaning that all transcript\_id's present in <5p\_supported\_reads> should be present in <5p\_clusters\_bed> (others will be ignored).
 
-    The TSSs of all transcript\_id's present in <5p\_supported\_reads> will be adjusted according to the corresponding TSS cluster in <5p\_clusters\_bed> (_i.e._, they will be extended or shortened to the cluster's 5' end).
+    The TSSs of all transcript\_id's present in <5p\_supported\_reads> will be adjusted according to the corresponding TSS cluster in <5p\_clusters\_bed> (_i.e._, they will be extended to the cluster's 5' end).
 
 - **arg5** <**3p\_clusters\_bed**>: Path to the BED6 file containing the coordinates of the TTS clusters, with transcript\_id's present in a comma-separated list in the 4th field (as obtained through _e.g._ `bedtools merge -c 4 -o collapse -s -d 5 -i <raw_TTSs.bed>`).
 
     These will be used to adjust the coordinates of supported TTSs, meaning that all transcript\_id's present in <3p\_supported\_reads> should be present in <3p\_clusters\_bed> (others will be ignored).
 
-    The TTSs of all transcript\_id's present in <3p\_supported\_reads> will be adjusted according to the corresponding TTS cluster in <3p\_clusters\_bed> (_i.e._, they will be extended or shortened to the cluster's 3' end).
+    The TTSs of all transcript\_id's present in <3p\_supported\_reads> will be adjusted according to the corresponding TTS cluster in <3p\_clusters\_bed> (_i.e._, they will be extended to the cluster's 3' end).
 
 # DESCRIPTION
 
-This program prepares a GTF file containing trancriptome read mappings for "anchored merging" (see Lagarde _et al._, 2017,  https://doi.org/10.1101/105064 for details about this procedure). Its output can be fed to a standard transcript merging software (_e.g._ [Compmerge](https://github.com/sdjebali/Compmerge), [Cuffmerge](http://cole-trapnell-lab.github.io/cufflinks/cuffmerge/))
+This program prepares a GTF file containing trancriptome read mappings for "anchored merging" (see Lagarde _et al._, 2017,  https://doi.org/10.1101/105064 for details about this procedure). Its output can be fed to a standard transcript merging program (_e.g._ [Compmerge](https://github.com/sdjebali/Compmerge), [Cuffmerge](http://cole-trapnell-lab.github.io/cufflinks/cuffmerge/)) to obtain anchor-merged transcript models.
 
-at is, we merged close and overlapping sites using the bedtools merge utility, with a maximum clustering distance of 5 bases ("-d 5"), and forcing strandedness ("-s"). Each individual TSS/TTS belonging to a cluster was assigned its start/end coordinate, respectively -- meaning that terminal exons were sometimes extended by a few nucleotides when necessary. In doing so, we ensured that within a cluster, all sites aligned at the exact same position. We subsequently added an "anchor" to all high-confidence, adjusted sites. This step consisted in attaching an artificial, biologically impossible chain of exons (i.e., four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to each transcript model, upstream or downstream of its high-confidence TSS or TTS, respectively. These fake exons served as anchors to supported start and termination sites during the merging step, and were discarded immediately afterwards.
+Any transcript present in the input (&lt;gff>) will be edited according to the following rules:
+
+- If its transcript\_id is **absent from** <**5p\_supported\_reads**>, its **TSS will be left untouched**.
+- If its transcript\_id is **absent from** <**3p\_supported\_reads**>, its **TTS will be left untouched**.
+- If its transcript\_id is **present in** <**5p\_supported\_reads**>, its 5' end structure will be affected the following way:
+    - **First**, its 5' end coordinates will be **adjusted** according to the information contained in <5p\_clusters\_bed>, _i.e._, they will be extended to the 5'end of the TSS cluster the transcript belongs to. In doing so, we ensure that within a cluster, all TSSs align at the exact same position.
+    - **Second**, a chain of artificial, "biologically impossible" exons will be added upstream of the adjusted TSS (_i.e._, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These **false exons** (identified with `**fakeExon "yes";**` in the 9th field of the GFF output) serve as **anchors** to supported TSSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
+- If its transcript\_id is **present in** <**3p\_supported\_reads**>, its 3' end structure will be affected the following way:
+    - **First**, its 3' end coordinates will be **adjusted** according to the information contained in <3p\_clusters\_bed>, _i.e._, they will be extended to the 3'end of the TTS cluster the transcript belongs to. In doing so, we ensure that within a cluster, all TTSs align at the exact same position.
+    - **Second**, a chain of artificial, "biologically impossible" exons will be added downstream of the adjusted TTS (_i.e._, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These **false exons** (identified with `**fakeExon "yes";**` in the 9th field of the GFF output) serve as **anchors** to supported TTSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
+
+**IMPORTANT WARNING: Any false exon (identified with `fakeExon "yes";` in anchorTranscriptsEnds' output) generated in the process and fed to the merging program NEEDS TO BE REMOVED AFTER MERGING.**
 
 # OUTPUT
 

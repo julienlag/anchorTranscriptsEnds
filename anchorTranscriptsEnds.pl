@@ -79,7 +79,7 @@ Any transcript present in the input (<gff>) will be edited according to the foll
 
 =item B<First>, its 5' end coordinates will be B<adjusted> according to the information contained in <5p_clusters_bed>, I<i.e.>, they will be extended to the 5'end of the TSS cluster the transcript belongs to. In doing so, we ensure that within a cluster, all TSSs align at the exact same position.
 
-=item B<Second>, a chain of artificial, "biologically impossible" exons will be added upstream of the adjusted TSS (I<i.e.>, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These B<false exons> (identified with B< C<< fakeExon "yes"; >> > in the 9th field of the GFF output) serve as B<anchors> to supported TSSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
+=item B<Second>, a chain of artificial, "biologically impossible" exons will be added upstream of the adjusted TSS (I<i.e.>, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These B<false exons> (identified with C<< fakeExon "yes"; >> in the 9th field of the GFF output) serve as B<anchors> to supported TSSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
 
 =back
 
@@ -89,7 +89,7 @@ Any transcript present in the input (<gff>) will be edited according to the foll
 
 =item B<First>, its 3' end coordinates will be B<adjusted> according to the information contained in <3p_clusters_bed>, I<i.e.>, they will be extended to the 3'end of the TTS cluster the transcript belongs to. In doing so, we ensure that within a cluster, all TTSs align at the exact same position.
 
-=item B<Second>, a chain of artificial, "biologically impossible" exons will be added downstream of the adjusted TTS (I<i.e.>, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These B<false exons> (identified with B< C<< fakeExon "yes"; >> > in the 9th field of the GFF output) serve as B<anchors> to supported TTSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
+=item B<Second>, a chain of artificial, "biologically impossible" exons will be added downstream of the adjusted TTS (I<i.e.>, four 1 nucleotide-long exons, separated by 3 nucleotide-long introns) to the transcript model. These B<false exons> (identified with C<< fakeExon "yes"; >> in the 9th field of the GFF output) serve as B<anchors> to supported TTSs during the merging step. In other words, they prevent the transcript they belong to from being merged into a longer transcript "container".
 
 =back
 
